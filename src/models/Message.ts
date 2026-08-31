@@ -1,16 +1,37 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IMessage extends Document {
+    telegramUserId: number;
+    username?: string;
+    firstName?: string;
     message: string;
+    chatId: number;
     createdAt: Date;
 }
 
 const messageSchema = new Schema<IMessage>(
     {
+        telegramUserId: {
+            type: Number,
+            required: true,
+        },
+
+        username: {
+            type: String,
+        },
+
+        firstName: {
+            type: String,
+        },
+
         message: {
             type: String,
             required: true,
-            trim: true,
+        },
+
+        chatId: {
+            type: Number,
+            required: true,
         },
     },
     {
@@ -18,6 +39,4 @@ const messageSchema = new Schema<IMessage>(
     }
 );
 
-const Message = mongoose.model<IMessage>("Message", messageSchema);
-
-export default Message;
+export default mongoose.model<IMessage>("Message", messageSchema);

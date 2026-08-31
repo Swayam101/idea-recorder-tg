@@ -1,19 +1,42 @@
-import axios from "axios";
+import Message from "../models/Message";
 
-const sendTelegramMessage = async (message: string): Promise<void> => {
-    const token = process.env.TELEGRAM_BOT_TOKEN;
-    const chatId = process.env.TELEGRAM_CHAT_ID;
+interface TelegramUpdate {
+    message?: {
+        message_id: number;
+        text?: string;
+        chat: {
+            id: number;
+        };
+        from?: {
+            id: number;
+            username?: string;
+            first_name?: string;
+        };
+    };
+}
 
-    if (!token || !chatId) {
-        throw new Error("Telegram configuration is missing");
+export const handleTelegramMessage = async (
+    update: TelegramUpdate
+): Promise<void> => {
+    const telegramMessage = update.message;
+
+    // Ignore updates that don't contain a message
+    if (!telegramMessage) {
+        return;
     }
 
-    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    // Ignore messages without text
+    if (!telegramMessage.text) {
+        return;
+    }
 
-    await axios.post(url, {
-        chat_id: chatId,
-        text: message,
+    await Message.create({
+        telegramUserId: telegramMessage.from?.id,
+        username: telegramMessage.from?.username,
+        firstName: telegramMessage.from?.first_name,
+        message: telegramMessage.text,
+        chatId: telegramMessage.chat.id,
     });
-};
 
-export default sendTelegramMessage;
+    console.log("Telegram message saved:", telegramMessage.text);
+};

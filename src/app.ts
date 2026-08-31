@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 
-import messageRoutes from "./routes/message.routes";
+import telegramRoutes from "./routes/telegram.routes";
 
 dotenv.config();
 
@@ -15,6 +15,6 @@ app.get("/", (_req, res) => {
     });
 });
 
-app.use("/api/messages", messageRoutes);
+app.use("/api/telegram", telegramRoutes);
 
 export default app;
