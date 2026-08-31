@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "module": "commonjs",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "typeRoots": ["node_modules/@types", "src/types"], // Fixed: Add defaults for @types/*
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true, // Bonus: Pairs well with esModuleInterop
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "declaration": true, // Generate .d.ts files
+    "declarationMap": true, // Better IDE navigation
+    "sourceMap": true, // For debugging
+    "inlineSources": true, // Embed src in maps
+    "types": ["node"]
+  },
+  "include": [
+    "src/**/*",
+    "../env" // Kept your env include; simplify if possible
+  ],
+  "exclude": [
+    "src/testing",
+    "**/*test*.{ts,js}" // Broader test exclusion
+  ],
+  "ts-node": {
+    "esm": false, // Stick to CommonJS
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
+}
